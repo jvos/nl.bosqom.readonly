@@ -176,7 +176,7 @@ function readonly_civicrm_buildForm($formName, &$form) {
   CRM_Utils_System::civiExit();*/
   
   if(!in_array('administrator', $user->roles) && !in_array('beheerder', $user->roles)){
-    if($formName != 'CRM_Mailing_Form_Search'){
+    if($formName != 'CRM_Mailing_Form_Search' && $formName != 'CRM_Case_Form_Search'){
     
       if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE || $form->getAction() == CRM_Core_Action::DELETE) {
         $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
