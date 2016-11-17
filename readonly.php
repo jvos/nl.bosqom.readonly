@@ -166,11 +166,23 @@ function readonly_civicrm_navigationMenu(&$menu) {
 function readonly_civicrm_buildForm($formName, &$form) {
   global $user;
   
+  /*echo('$formName: ' . $formName) . '<br/>' . PHP_EOL;
+  echo('$form->getAction(): ' . $form->getAction()) . '<br/>' . PHP_EOL;
+  var_dump($form->getAction());
+  var_dump(CRM_Core_Action::ADD);
+  var_dump(CRM_Core_Action::UPDATE);
+  var_dump(CRM_Core_Action::DELETE);
+  
+  CRM_Utils_System::civiExit();*/
+  
   if(!in_array('administrator', $user->roles) && !in_array('beheerder', $user->roles)){
-    if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE || $form->getAction() == CRM_Core_Action::DELETE) {
-      $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
-      CRM_Core_Session::setStatus($message, '', 'Error');
-      CRM_Utils_System::redirect($_SESSION['CiviCRM']['CRM_Utils_Recent'][0]['url']);
+    if($formName != 'CRM_Mailing_Form_Search'){
+    
+      if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE || $form->getAction() == CRM_Core_Action::DELETE) {
+        $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
+        CRM_Core_Session::setStatus($message, '', 'Error');
+        CRM_Utils_System::redirect($_SESSION['CiviCRM']['CRM_Utils_Recent'][0]['url']);
+      }
     }
   }
 }
