@@ -165,7 +165,13 @@ function readonly_civicrm_navigationMenu(&$menu) {
 
 function readonly_civicrm_buildForm($formName, &$form) {
   global $user;
-  
+/*echo('$formName: ' . $formName) . '<br/>' . PHP_EOL;
+  echo('$form->getAction(): ' . $form->getAction()) . '<br/>' . PHP_EOL;
+	echo('<pre>');
+	print_r($form);
+echo('</pre>');
+  CRM_Utils_System::civiExit();*/
+
   /*echo('$formName: ' . $formName) . '<br/>' . PHP_EOL;
   echo('$form->getAction(): ' . $form->getAction()) . '<br/>' . PHP_EOL;
   var_dump($form->getAction());
@@ -174,10 +180,24 @@ function readonly_civicrm_buildForm($formName, &$form) {
   var_dump(CRM_Core_Action::DELETE);
   
   CRM_Utils_System::civiExit();*/
-  
+
   if(!in_array('administrator', $user->roles) && !in_array('beheerder', $user->roles)){
-    if($formName != 'CRM_Mailing_Form_Search' && $formName != 'CRM_Case_Form_Search'){
+    if($formName != 'CRM_Mailing_Form_Search' && $formName != 'CRM_Case_Form_Search' && $formName != 'CRM_Group_Form_Search'){
+
+      if($formName == 'CRM_Case_Form_CaseView' && $form->getAction() == CRM_Core_Action::VIEW){
+        foreach($form->_elements as $key => $element){
+          if('Voer QA Audit uit' == $element->_label || 'Tijdlijn toevoegen' == $element->_label){
+            unset($form->_elements[$key]);
+          }
+        }
+      }
     
+      if(($formName == 'CRM_Contact_Form_Task_Email' && $form->getAction() == CRM_Core_Action::BASIC) || ($formName == 'CRM_Mailing_Form_Group' && $form->getAction() == CRM_Core_Action::BASIC) || ($formName == 'CRM_Case_Form_ActivityToCase' && $form->getAction() == CRM_Core_Action::NONE) || ($formName == 'CRM_Case_Form_Report' && $form->getAction() == CRM_Core_Action::NONE)){
+        $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
+        CRM_Core_Session::setStatus($message, '', 'Error');
+        CRM_Utils_System::redirect($_SESSION['CiviCRM']['CRM_Utils_Recent'][0]['url']);
+      }
+
       if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE || $form->getAction() == CRM_Core_Action::DELETE) {
         $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
         CRM_Core_Session::setStatus($message, '', 'Error');
