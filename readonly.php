@@ -193,13 +193,13 @@ echo('</pre>');
       }
     
       if(($formName == 'CRM_Contact_Form_Task_Email' && $form->getAction() == CRM_Core_Action::BASIC) || ($formName == 'CRM_Mailing_Form_Group' && $form->getAction() == CRM_Core_Action::BASIC) || ($formName == 'CRM_Case_Form_ActivityToCase' && $form->getAction() == CRM_Core_Action::NONE) || ($formName == 'CRM_Case_Form_Report' && $form->getAction() == CRM_Core_Action::NONE)){
-        $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
+        $message = ts('U heeft niet de benodigde machtiging om dit %1 te bewerken.', array(1 => $form->_attributes['name']));
         CRM_Core_Session::setStatus($message, '', 'Error');
         CRM_Utils_System::redirect($_SESSION['CiviCRM']['CRM_Utils_Recent'][0]['url']);
       }
 
       if ($form->getAction() == CRM_Core_Action::ADD || $form->getAction() == CRM_Core_Action::UPDATE || $form->getAction() == CRM_Core_Action::DELETE) {
-        $message = ts('LET OP! Het is niet de bedoeling dat er in CiviCRM nog inhoud wordt gewijzigd. Er kan nog wel worden geraadpleegd. U heeft niet voldoende rechten om dit %1 aan te passen!', array(1 => $form->_attributes['name']));
+        $message = ts('U heeft niet de benodigde machtiging om dit %1 te bewerken.', array(1 => $form->_attributes['name']));
         CRM_Core_Session::setStatus($message, '', 'Error');
         CRM_Utils_System::redirect($_SESSION['CiviCRM']['CRM_Utils_Recent'][0]['url']);
       }
