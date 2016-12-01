@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="nl.bosqom.readonly" type="module">
   <file>readonly</file>
-  <name>FIXME</name>
-  <description>FIXME</description>
+  <name>Civicrm Readonly</name>
+  <description>Make civicrm resadonly, execpt for the administators</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>FIXME</author>
